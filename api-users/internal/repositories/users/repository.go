@@ -1,12 +1,10 @@
 package users
 
 import (
-	"net/http"
 	"users/internal/helpers"
 	"users/internal/models"
 
 	"github.com/gofrs/uuid"
-	"github.com/sirupsen/logrus"
 )
 
 func GetAllUsers() ([]models.User, error) {
@@ -85,15 +83,17 @@ func EditUser(user *models.User) error {
 	return nil
 }
 
-func UpdateUser(user *models.User) (*models.User, error) {
-	err := repository.EditUser(user)
+func DeleteUser(userID uuid.UUID) error {
+	db, err := helpers.OpenDB()
 	if err != nil {
-		logrus.Errorf("error updating user: %s", err.Error())
-		return nil, &models.CustomError{
-			Message: "Failed to update user",
-			Code:    http.StatusInternalServerError,
-		}
+		return err
+	}
+	defer helpers.CloseDB(db)
+
+	_, err = db.Exec("DELETE FROM users WHERE id = ?", userID)
+	if err != nil {
+		return err
 	}
 
-	return user, nil
+	return nil
 }
