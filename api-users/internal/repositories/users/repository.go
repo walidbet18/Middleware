@@ -1,10 +1,12 @@
 package users
 
 import (
+	"net/http"
 	"users/internal/helpers"
 	"users/internal/models"
 
 	"github.com/gofrs/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 func GetAllUsers() ([]models.User, error) {
@@ -66,4 +68,32 @@ func AddUser(user *models.User) error {
 	}
 
 	return nil
+}
+
+func EditUser(user *models.User) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return err
+	}
+	defer helpers.CloseDB(db)
+
+	_, err = db.Exec("UPDATE users SET username = ?, email = ?, age = ? WHERE id = ?", user.Username, user.Email, user.Age, user.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func UpdateUser(user *models.User) (*models.User, error) {
+	err := repository.EditUser(user)
+	if err != nil {
+		logrus.Errorf("error updating user: %s", err.Error())
+		return nil, &models.CustomError{
+			Message: "Failed to update user",
+			Code:    http.StatusInternalServerError,
+		}
+	}
+
+	return user, nil
 }

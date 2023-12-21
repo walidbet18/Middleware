@@ -20,6 +20,7 @@ func main() {
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(users.Ctx)
 			r.Get("/", users.GetUser)
+			r.Put("/", users.EditUser)
 
 		})
 	})
