@@ -1,10 +1,32 @@
 package main
 
 import (
+	"net/http"
+	"users/internal/controllers/users"
 	"users/internal/helpers"
+	_ "users/internal/models"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 )
+
+func main() {
+	r := chi.NewRouter()
+
+	r.Route("/users", func(r chi.Router) {
+		r.Get("/", users.GetUsers)
+
+		r.Route("/{id}", func(r chi.Router) {
+			r.Use(users.Ctx)
+			r.Get("/", users.GetUser)
+
+		})
+	})
+
+	logrus.Info("[INFO] Web server started. Now listening on *:8080")
+	logrus.Fatalln(http.ListenAndServe(":8080", r))
+
+}
 
 func init() {
 	db, err := helpers.OpenDB()
