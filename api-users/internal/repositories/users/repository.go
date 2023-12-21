@@ -49,3 +49,21 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 	}
 	return &user, err
 }
+
+func AddUser(user *models.User) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return err
+	}
+	defer helpers.CloseDB(db)
+
+	id, err := uuid.NewV4() // Generate a new UUID
+
+	// Convert UUID to string directly before inserting into the database
+	_, err = db.Exec("INSERT INTO users (id, username, email, age) VALUES (?, ?, ?, ?)", id.String(), user.Username, user.Email, user.Age)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
