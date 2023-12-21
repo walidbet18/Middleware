@@ -92,3 +92,18 @@ func EditSong(song *models.Song) error {
 
 	return nil
 }
+
+func DeleteSong(songID uuid.UUID) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec("DELETE FROM songs WHERE id = ?", songID)
+	defer helpers.CloseDB(db)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

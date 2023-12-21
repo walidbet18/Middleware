@@ -19,6 +19,7 @@ func main() {
 			r.Use(songs.Ctx)
 			r.Put("/", songs.EditSong)
 			r.Get("/", songs.GetSong)
+			r.Delete("/", songs.DeleteSong)
 
 		})
 	})
