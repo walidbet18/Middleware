@@ -17,6 +17,7 @@ func main() {
 		r.Post("/", songs.AddSong)
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(songs.Ctx)
+			r.Put("/", songs.EditSong)
 			r.Get("/", songs.GetSong)
 
 		})
