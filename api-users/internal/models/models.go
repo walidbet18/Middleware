@@ -7,6 +7,6 @@ import (
 type User struct {
 	ID       *uuid.UUID `json:"id"`
 	Username string     `json:"username"`
-	Email    string     `json:"email"`
-	Age      string     `json:"age"`
+	Password string     `json:"password"`
+	Name     string     `json:"name"`
 }
