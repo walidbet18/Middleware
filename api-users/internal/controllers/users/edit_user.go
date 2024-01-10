@@ -44,5 +44,6 @@ func EditUser(w http.ResponseWriter, r *http.Request) {
 
 	// Répondre avec un statut 200 OK si tout s'est bien passé
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte("Utilisateur mis à jour avec succès"))
+	response, _ := json.Marshal(updatedUser)
+	_, _ = w.Write(response)
 }

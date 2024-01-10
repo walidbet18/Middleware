@@ -26,8 +26,8 @@ func main() {
 		})
 	})
 
-	logrus.Info("[INFO] Web server started. Now listening on *:4000")
-	logrus.Fatalln(http.ListenAndServe(":4000", r))
+	logrus.Info("[INFO] Web server started. Now listening on *:4010")
+	logrus.Fatalln(http.ListenAndServe(":4010", r))
 
 }
 
@@ -39,9 +39,8 @@ func init() {
 	schemes := []string{
 		`CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(100) NOT NULL,
-	name VARCHAR(100) NOT NULL
+    name VARCHAR(50) NOT NULL,
+	username VARCHAR(100) NOT NULL
 )`,
 	}
 	for _, scheme := range schemes {

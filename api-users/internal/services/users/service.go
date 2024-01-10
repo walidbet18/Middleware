@@ -46,7 +46,7 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 }
 
 func AddUser(user *models.User) (*models.User, error) {
-	err := repository.AddUser(user)
+	user, err := repository.AddUser(user)
 	if err != nil {
 		logrus.Errorf("error adding user: %s", err.Error())
 		return nil, &models.CustomError{

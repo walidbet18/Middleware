@@ -32,15 +32,25 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Appeler le service pour ajouter la nouvelle user
-	err = users.AddUser(&nouvelleUser)
-	if err != nil {
-		logrus.Errorf("Erreur lors de l'ajout de la user : %s", err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		_, _ = w.Write([]byte("Erreur interne du serveur"))
-		return
-	}
+	user, err := users.AddUser(&nouvelleUser)
 
-	// Répondre avec un statut 201 Created si tout s'est bien passé
+	if err != nil {
+		// logging error
+		logrus.Errorf("error : %s", err.Error())
+		customError, isCustom := err.(*models.CustomError)
+		if isCustom {
+			// writing http code in header
+			w.WriteHeader(customError.Code)
+			// writing error message in body
+			body, _ := json.Marshal(customError)
+			_, _ = w.Write(body)
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+	}
 	w.WriteHeader(http.StatusCreated)
-	_, _ = w.Write([]byte("user ajoutée avec succès"))
+	w.Header().Set("Content-Type", "application/json")
+	body, _ := json.Marshal(user)
+	_, _ = w.Write(body)
+	return
 }
