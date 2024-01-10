@@ -24,8 +24,8 @@ func main() {
 		})
 	})
 
-	logrus.Info("[INFO] Web server started. Now listening on *:8080")
-	logrus.Fatalln(http.ListenAndServe(":8080", r))
+	logrus.Info("[INFO] Web server started. Now listening on *:4010")
+	logrus.Fatalln(http.ListenAndServe(":4010", r))
 
 }
 
@@ -41,9 +41,8 @@ func init() {
             id UUID PRIMARY KEY,
             title VARCHAR(255) NOT NULL,
             artist VARCHAR(100) NOT NULL,
-            type VARCHAR(50) NOT NULL,
-            duration VARCHAR(20) NOT NULL,
-            releaseyear INT NOT NULL
+            filename VARCHAR(50) NOT NULL,
+            published VARCHAR(20) NOT NULL
         )`,
 	}
 

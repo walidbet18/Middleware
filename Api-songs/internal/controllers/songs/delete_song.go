@@ -28,7 +28,5 @@ func DeleteSong(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Répondre avec un statut 200 OK si tout s'est bien passé
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte("Chanson supprimée avec succès"))
+	w.WriteHeader(http.StatusNoContent)
 }

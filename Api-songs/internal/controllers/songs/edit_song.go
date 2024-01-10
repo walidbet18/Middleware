@@ -30,5 +30,6 @@ func EditSong(w http.ResponseWriter, r *http.Request) {
 
 	// Répondre avec un statut 200 OK si tout s'est bien passé
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte("Chanson mise à jour avec succès"))
+	response, _ := json.Marshal(updatedSong)
+	_, _ = w.Write(response)
 }

@@ -2,7 +2,6 @@ package songs
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"songs/internal/models"
 	"songs/internal/services/songs"
@@ -20,7 +19,6 @@ func AddSong(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("Requête invalide"))
 		return
 	}
-	fmt.Print()
 
 	// Appeler le service pour ajouter la nouvelle chanson
 	_, err = songs.AddSong(&newSong)
@@ -33,5 +31,6 @@ func AddSong(w http.ResponseWriter, r *http.Request) {
 
 	// Répondre avec un statut 201 Created si tout s'est bien passé
 	w.WriteHeader(http.StatusCreated)
-	_, _ = w.Write([]byte("Chanson ajoutée avec succès"))
+	response, _ := json.Marshal(newSong)
+	_, _ = w.Write(response)
 }
