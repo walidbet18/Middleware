@@ -58,8 +58,8 @@ func AddUser(user *models.User) (*models.User, error) {
 	return user, nil
 }
 
-func UpdateUser(user *models.User) (*models.User, error) {
-	err := repository.EditUser(user)
+func UpdateUser(userID uuid.UUID, user *models.User) (*models.User, error) {
+	err := repository.EditUser(userID, user)
 	if err != nil {
 		logrus.Errorf("error updating user: %s", err.Error())
 		return nil, &models.CustomError{

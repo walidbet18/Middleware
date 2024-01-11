@@ -6,6 +6,9 @@ import (
 	"users/internal/models"
 	"users/internal/services/users"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/gofrs/uuid"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -24,6 +27,7 @@ import (
 // EditUser modifie les détails d'un utilisateur existant.
 func EditUser(w http.ResponseWriter, r *http.Request) {
 	// Décodez le corps de la requête JSON dans une structure de données models.User
+	userID, _ := uuid.FromString(chi.URLParam(r, "id"))
 
 	var updatedUser models.User                         // Pas de pointeur ici, juste la structure User
 	err := json.NewDecoder(r.Body).Decode(&updatedUser) // Utilisation de "&" pour obtenir l'adresse de la structure
@@ -34,7 +38,7 @@ func EditUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Appeler la fonction de mise à jour de l'utilisateur dans le référentiel approprié
-	_, err = users.UpdateUser(&updatedUser) // Passer la référence de la structure mise à jour
+	_, err = users.UpdateUser(userID, &updatedUser) // Passer la référence de la structure mise à jour
 	if err != nil {
 		logrus.Errorf("Erreur lors de la modification de l'utilisateur : %s", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)

@@ -75,14 +75,14 @@ func AddUser(user *models.User) (*models.User, error) {
 	return user, nil
 }
 
-func EditUser(user *models.User) error {
+func EditUser(userID uuid.UUID, user *models.User) error {
 	db, err := helpers.OpenDB()
 	if err != nil {
 		return err
 	}
 	defer helpers.CloseDB(db)
 
-	_, err = db.Exec("UPDATE users SET name = ?, username = ? WHERE id = ?", user.Name, user.Username, user.ID)
+	_, err = db.Exec("UPDATE users SET name = ?, username = ? WHERE id = ?", user.Name, user.Username, userID)
 	if err != nil {
 		return err
 	}
